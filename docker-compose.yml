@@ -6,6 +6,8 @@ nginx:
   environment:
     - VIRTUAL_HOST=hadoop.vhost.tld
     - VIRTUAL_HOST=hdfsfb.vhost.tld
+    - VIRTUAL_HOST=spark.vhost.tld
+    - VIRTUAL_HOST=solr.vhost.tld
   ports:
     - "80:80"
 
@@ -78,3 +80,33 @@ hdfsfb:
   net: hadoop
   environment:
     - NAMENODE_HOST=namenode
+
+#
+# Spark configuration block
+#
+
+spark-master:
+  image: bde2020/spark-master:1.5.1-hadoop2.6
+  hostname: spark-master
+  container_name: spark-master
+  net: hadoop
+  environment:
+    INIT_DAEMON_STEP: setup_spark
+
+spark-worker:
+  image: bde2020/spark-worker:1.5.1-hadoop2.6
+  net: hadoop
+  environment:
+    - SPARK_MASTER=spark://spark-master:7077
+
+#
+# Flink configuration block
+#
+
+#
+# Solr configuration block
+#
+
+solr:
+  image: bde2020/solr
+  net: hadoop
