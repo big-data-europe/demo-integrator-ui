@@ -9,6 +9,8 @@ nginx:
     - VIRTUAL_HOST=spark.vhost.tld
     - VIRTUAL_HOST=solr.vhost.tld
     - VIRTUAL_HOST=flink.vhost.tld
+    - VIRTUAL_HOST=strabon.vhost.tld
+    - VIRTUAL_HOST=sextant.vhost.tld
   ports:
     - "80:80"
 
@@ -135,3 +137,23 @@ zookeeper:
   net: hadoop
   environment:
     - MYID=1
+
+#
+# Strabon configuration block
+#
+
+strabon:
+  image: bde2020/strabon
+  hostname: strabon
+  container_name: strabon
+  net: hadoop
+
+#
+# Sextant configuration block
+#
+
+sextant:
+  image: bde2020/sextant
+  hostname: sextant
+  container_name: sextant
+  net: hadoop
