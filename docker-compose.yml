@@ -8,6 +8,7 @@ nginx:
     - VIRTUAL_HOST=hdfsfb.vhost.tld
     - VIRTUAL_HOST=spark.vhost.tld
     - VIRTUAL_HOST=solr.vhost.tld
+    - VIRTUAL_HOST=flink.vhost.tld
   ports:
     - "80:80"
 
@@ -103,10 +104,34 @@ spark-worker:
 # Flink configuration block
 #
 
+flink-master:
+  image: bde2020/flink-master:0.10.1-hadoop2.7
+  hostname: flink-master
+  container_name: flink-master
+  environment:
+    - INIT_DAEMON_STEP=setup_flink
+  net: hadoop
+flink-worker:
+  image: bde2020/flink-worker:0.10.1-hadoop2.7
+  hostname: flink-worker
+  container_name: flink-worker
+  net: hadoop
+
 #
 # Solr configuration block
 #
 
 solr:
-  image: bde2020/solr
+  image: earthquakesan/solr:1.0.0-solr6.0.1
+  hostname: solr
+  container_name: solr
+  environment:
+    - ZOOKEEPER_HOST=zookeeper:2181
   net: hadoop
+zookeeper:
+  image: mesoscloud/zookeeper:3.4.8-centos-7
+  hostname: zookeeper
+  container_name: zookeeper
+  net: hadoop
+  environment:
+    - MYID=1
