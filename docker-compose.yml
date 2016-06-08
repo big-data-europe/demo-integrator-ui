@@ -157,3 +157,12 @@ sextant:
   hostname: sextant
   container_name: sextant
   net: hadoop
+
+#
+# BDE Integrator Interface
+#
+
+integrator-ui:
+  build: ./integrator-ui
+  hostname: integrator-ui
+  container_name: integrator-ui
