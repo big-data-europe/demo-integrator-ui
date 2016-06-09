@@ -4,13 +4,13 @@ nginx:
   net: hadoop
   container_name: nginx
   environment:
-    - VIRTUAL_HOST=hadoop.vhost.tld
-    - VIRTUAL_HOST=hdfsfb.vhost.tld
-    - VIRTUAL_HOST=spark.vhost.tld
-    - VIRTUAL_HOST=solr.vhost.tld
-    - VIRTUAL_HOST=flink.vhost.tld
-    - VIRTUAL_HOST=strabon.vhost.tld
-    - VIRTUAL_HOST=sextant.vhost.tld
+    - VIRTUAL_HOST=hadoop.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=hdfsfb.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=spark.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=solr.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=flink.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=strabon.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=sextant.sc1.big-data-europe.eu
   ports:
     - "80:80"
 
