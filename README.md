@@ -55,7 +55,7 @@ server {
   }
 }
 ```
-As we can see from the configuration, request to hadoop.sc1.big-data-europe.eu will be proxied through 127.0.0.1:8000 and 127.0.0.1:8001. :8001 explicitly retrieves gzip'ed content from namenode and decompresses it (sub_filter directive works only on uncompressed content). :8000 injects required CSS stylesheets right before '</head>' tag.
+As we can see from the configuration, request to hadoop.sc1.big-data-europe.eu will be proxied through 127.0.0.1:8000 and 127.0.0.1:8001. :8001 explicitly retrieves gzip'ed content from namenode and decompresses it (sub_filter directive works only on uncompressed content). :8000 injects required CSS stylesheets right before ```</head>``` tag.
 
 ## How to run
 
