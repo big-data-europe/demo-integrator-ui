@@ -11,6 +11,7 @@ nginx:
     - VIRTUAL_HOST=flink.sc1.big-data-europe.eu
     - VIRTUAL_HOST=strabon.sc1.big-data-europe.eu
     - VIRTUAL_HOST=sextant.sc1.big-data-europe.eu
+    - VIRTUAL_HOST=frontend.sc1.big-data-europe.eu
   ports:
     - "80:80"
 
@@ -22,7 +23,6 @@ namenode:
   image: bde2020/hadoop-namenode:1.0.0
   hostname: namenode
   container_name: namenode
-  domainname: hadoop
   net: hadoop
   volumes:
     - ./data/namenode:/hadoop/dfs/name
@@ -35,7 +35,6 @@ resourcemanager:
   image: bde2020/hadoop-resourcemanager:1.0.0
   hostname: resourcemanager
   container_name: resourcemanager
-  domainname: hadoop
   net: hadoop
   env_file:
     - ./hadoop.env
@@ -44,7 +43,6 @@ historyserver:
   image: bde2020/hadoop-historyserver:1.0.0
   hostname: historyserver
   container_name: historyserver
-  domainname: hadoop
   net: hadoop
   volumes:
     - ./data/historyserver:/hadoop/yarn/timeline
@@ -55,7 +53,6 @@ nodemanager1:
   image: bde2020/hadoop-nodemanager:1.0.0
   hostname: nodemanager1
   container_name: nodemanager1
-  domainname: hadoop
   net: hadoop
   env_file:
     - ./hadoop.env
@@ -166,3 +163,4 @@ integrator-ui:
   build: ./integrator-ui
   hostname: integrator-ui
   container_name: integrator-ui
+  net: hadoop
