@@ -36,7 +36,7 @@ div.canvas {
 }
 
 .footer .boxed {
-    height: auto !important;
+    height: 200px !important;
     width: auto !important;
     padding: 0 20px;
     border: none;
@@ -45,9 +45,33 @@ div.canvas {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
 }
 
-.footer .boxed > div {
-    margin-top: 20px !important;
+.footer .boxed h3 {
+    margin: 0.25rem;
 }
+
+.footer .boxed > div {
+    margin-top: 10px !important;
+}
+
+.footer .boxed > div > div {
+    height: 40px;
+    margin: 0;
+}
+
+.footer .boxed #commandLineOptionsField {
+    height: 40px;
+    margin: 0;
+}
+
+.footer .boxed #commandLineArgsField {
+    height: 40px;
+    margin: 0;
+}
+
+.footer .boxed > div .spaced {
+    margin: 10px 0 0 0 !important;
+}
+
 
 .footer .boxed > div #suspendedOption > span {
     position: absolute;
