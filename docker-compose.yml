@@ -1,166 +1,128 @@
-nginx:
-  build: ./frontend
-  hostname: nginx
-  net: hadoop
-  container_name: nginx
-  environment:
-    - VIRTUAL_HOST=hadoop.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=hdfsfb.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=spark.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=solr.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=flink.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=strabon.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=sextant.sc1.big-data-europe.eu
-    - VIRTUAL_HOST=frontend.sc1.big-data-europe.eu
-  ports:
-    - "80:80"
+version: '2'
 
-#
-# Hadoop block
-#
+services:
+  nginx:
+    build: ./frontend
+    ports:
+      - "80:80"
 
-namenode:
-  image: bde2020/hadoop-namenode:1.0.0
-  hostname: namenode
-  container_name: namenode
-  net: hadoop
-  volumes:
-    - ./data/namenode:/hadoop/dfs/name
-  environment:
-    - CLUSTER_NAME=test
-  env_file:
-    - ./hadoop.env
+  namenode:
+    image: bde2020/hadoop-namenode:1.0.0
+    links:
+      - nginx
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+    env_file:
+      - ./hadoop.env
 
-resourcemanager:
-  image: bde2020/hadoop-resourcemanager:1.0.0
-  hostname: resourcemanager
-  container_name: resourcemanager
-  net: hadoop
-  env_file:
-    - ./hadoop.env
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:1.0.0
+    links:
+      - nginx
+      - namenode
+    env_file:
+      - ./hadoop.env
 
-historyserver:
-  image: bde2020/hadoop-historyserver:1.0.0
-  hostname: historyserver
-  container_name: historyserver
-  net: hadoop
-  volumes:
-    - ./data/historyserver:/hadoop/yarn/timeline
-  env_file:
-    - ./hadoop.env
+  historyserver:
+    image: bde2020/hadoop-historyserver:1.0.0
+    links:
+      - nginx
+      - namenode
+    volumes:
+      - ./data/historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop.env
 
-nodemanager1:
-  image: bde2020/hadoop-nodemanager:1.0.0
-  hostname: nodemanager1
-  container_name: nodemanager1
-  net: hadoop
-  env_file:
-    - ./hadoop.env
+  nodemanager1:
+    image: bde2020/hadoop-nodemanager:1.0.0
+    links:
+      - nginx
+      - namenode
+    env_file:
+      - ./hadoop.env
 
-datanode1:
-  image: bde2020/hadoop-datanode:1.0.0
-  hostname: datanode1
-  container_name: datanode1
-  domainname: hadoop
-  net: hadoop
-  volumes:
-    - ./data/datanode1:/hadoop/dfs/data
-  env_file:
-    - ./hadoop.env
+  datanode1:
+    image: bde2020/hadoop-datanode:1.0.0
+    links:
+      - nginx
+      - namenode
+    volumes:
+      - ./data/datanode1:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
 
-#
-# FileBrowser block
-#
+  #
+  # FileBrowser block
+  #
 
-hdfsfb:
-  image: bde2020/hdfs-filebrowser:3.9
-  hostname: hdfsfb
-  container_name: hdfsfb
-  domainname: hadoop
-  net: hadoop
-  environment:
-    - NAMENODE_HOST=namenode
+  hdfsfb:
+    image: bde2020/hdfs-filebrowser:3.9
+    links:
+      - nginx
+      - namenode
+    environment:
+      - NAMENODE_HOST=namenode
 
-#
-# Spark configuration block
-#
+  #
+  # Spark configuration block
+  #
 
-spark-master:
-  image: bde2020/spark-master:1.5.1-hadoop2.6
-  hostname: spark-master
-  container_name: spark-master
-  net: hadoop
-  environment:
-    INIT_DAEMON_STEP: setup_spark
+  spark-master:
+    image: bde2020/spark-master:1.5.1-hadoop2.6
+    links:
+      - nginx
+    environment:
+      INIT_DAEMON_STEP: setup_spark
 
-spark-worker:
-  image: bde2020/spark-worker:1.5.1-hadoop2.6
-  net: hadoop
-  environment:
-    - SPARK_MASTER=spark://spark-master:7077
+  spark-worker:
+    image: bde2020/spark-worker:1.5.1-hadoop2.6
+    links:
+      - nginx
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
 
-#
-# Flink configuration block
-#
+  flink-master:
+    image: bde2020/flink-master:0.10.1-hadoop2.7
+    links:
+      - nginx
+    environment:
+      - INIT_DAEMON_STEP=setup_flink
 
-flink-master:
-  image: bde2020/flink-master:0.10.1-hadoop2.7
-  hostname: flink-master
-  container_name: flink-master
-  environment:
-    - INIT_DAEMON_STEP=setup_flink
-  net: hadoop
-flink-worker:
-  image: bde2020/flink-worker:0.10.1-hadoop2.7
-  hostname: flink-worker
-  container_name: flink-worker
-  net: hadoop
+  flink-worker:
+    image: bde2020/flink-worker:0.10.1-hadoop2.7
+    links:
+      - nginx
+      - flink-master
 
-#
-# Solr configuration block
-#
+  solr:
+    image: earthquakesan/solr:1.0.0-solr6.0.1
+    links:
+      - nginx
+      - zookeeper
+    environment:
+      - ZOOKEEPER_HOST=zookeeper:2181
 
-solr:
-  image: earthquakesan/solr:1.0.0-solr6.0.1
-  hostname: solr
-  container_name: solr
-  environment:
-    - ZOOKEEPER_HOST=zookeeper:2181
-  net: hadoop
-zookeeper:
-  image: mesoscloud/zookeeper:3.4.8-centos-7
-  hostname: zookeeper
-  container_name: zookeeper
-  net: hadoop
-  environment:
-    - MYID=1
+  zookeeper:
+    image: mesoscloud/zookeeper:3.4.8-centos-7
+    links:
+      - nginx
+    environment:
+      - MYID=1
 
-#
-# Strabon configuration block
-#
+  strabon:
+    image: bde2020/strabon
+    links:
+      - nginx
 
-strabon:
-  image: bde2020/strabon
-  hostname: strabon
-  container_name: strabon
-  net: hadoop
+  sextant:
+    image: bde2020/sextant
+    links:
+      - nginx
 
-#
-# Sextant configuration block
-#
-
-sextant:
-  image: bde2020/sextant
-  hostname: sextant
-  container_name: sextant
-  net: hadoop
-
-#
-# BDE Integrator Interface
-#
-
-integrator-ui:
-  build: ./integrator-ui
-  hostname: integrator-ui
-  container_name: integrator-ui
-  net: hadoop
+  integrator-ui:
+    build: ./integrator-ui
+    links:
+      - nginx
