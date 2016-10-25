@@ -1,55 +1,84 @@
 version: '2'
 
 services:
-  nginx:
-    build: ./frontend
+  csswrapper:
+    image: bde2020/nginx-proxy-with-css:latest
     ports:
       - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - nginx-proxy
+
+  nginx:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - nginx-proxy
 
   namenode:
     image: bde2020/hadoop-namenode:1.0.0
-    links:
-      - nginx
     volumes:
       - ./data/namenode:/hadoop/dfs/name
     environment:
       - CLUSTER_NAME=test
+      - VIRTUAL_HOST=namenode.big-data-europe.local
+      - VIRTUAL_PORT=50070
+      - CSS_SOURCE=hadoop
     env_file:
       - ./hadoop.env
+    networks:
+      - nginx-proxy
+
+  datanode:
+    image: bde2020/hadoop-datanode:1.0.0
+    links:
+      - namenode
+    environment:
+      - VIRTUAL_HOST=datanode.big-data-europe.local
+      - CSS_SOURCE=hadoop
+    volumes:
+      - ./data/datanode1:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    networks:
+      - nginx-proxy
 
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:1.0.0
     links:
-      - nginx
+      - csswrapper
       - namenode
+    environment:
+      - VIRTUAL_HOST=resourcemanager.big-data-europe.local
+      - CSS_SOURCE=hadoop-resource-manager
     env_file:
       - ./hadoop.env
 
   historyserver:
     image: bde2020/hadoop-historyserver:1.0.0
     links:
-      - nginx
+      - csswrapper
       - namenode
+    environment:
+      - VIRTUAL_HOST=historyserver.big-data-europe.local
+      - CSS_SOURCE=hadoop-history-server
     volumes:
       - ./data/historyserver:/hadoop/yarn/timeline
     env_file:
       - ./hadoop.env
 
-  nodemanager1:
+  nodemanager:
     image: bde2020/hadoop-nodemanager:1.0.0
     links:
-      - nginx
+      - csswrapper
       - namenode
-    env_file:
-      - ./hadoop.env
-
-  datanode1:
-    image: bde2020/hadoop-datanode:1.0.0
-    links:
-      - nginx
-      - namenode
-    volumes:
-      - ./data/datanode1:/hadoop/dfs/data
+    environment:
+      - VIRTUAL_HOST=nodemanager.big-data-europe.local
+      - CSS_SOURCE=hadoop-node-manager
     env_file:
       - ./hadoop.env
 
@@ -60,8 +89,11 @@ services:
   hdfsfb:
     image: bde2020/hdfs-filebrowser:3.9
     links:
-      - nginx
+      - csswrapper
       - namenode
+    environment:
+      - VIRTUAL_HOST=hdfsfb.big-data-europe.local
+      - CSS_SOURCE=hdfs
     environment:
       - NAMENODE_HOST=namenode
 
@@ -72,57 +104,79 @@ services:
   spark-master:
     image: bde2020/spark-master:1.5.1-hadoop2.6
     links:
-      - nginx
+      - csswrapper
     environment:
-      INIT_DAEMON_STEP: setup_spark
+      - INIT_DAEMON_STEP=setup_spark
+      - VIRTUAL_HOST=sparkmaster.big-data-europe.local
+      - CSS_SOURCE=spark-master
 
   spark-worker:
     image: bde2020/spark-worker:1.5.1-hadoop2.6
     links:
-      - nginx
+      - csswrapper
       - spark-master
     environment:
       - SPARK_MASTER=spark://spark-master:7077
+      - VIRTUAL_HOST=sparkworker.big-data-europe.local
+      - CSS_SOURCE=spark-master
 
   flink-master:
     image: bde2020/flink-master:0.10.1-hadoop2.7
     links:
-      - nginx
+      - csswrapper
     environment:
       - INIT_DAEMON_STEP=setup_flink
+      - VIRTUAL_HOST=flinkmaster.big-data-europe.local
+      - CSS_SOURCE=flink
 
   flink-worker:
     image: bde2020/flink-worker:0.10.1-hadoop2.7
     links:
-      - nginx
+      - csswrapper
       - flink-master
+    environment:
+      - VIRTUAL_HOST=flinkworker.big-data-europe.local
+      - CSS_SOURCE=flink
 
   solr:
     image: earthquakesan/solr:1.0.0-solr6.0.1
     links:
-      - nginx
+      - csswrapper
       - zookeeper
     environment:
       - ZOOKEEPER_HOST=zookeeper:2181
+      - VIRTUAL_HOST=solr.big-data-europe.local
+      - CSS_SOURCE=solr
 
   zookeeper:
     image: mesoscloud/zookeeper:3.4.8-centos-7
     links:
-      - nginx
+      - csswrapper
     environment:
       - MYID=1
 
   strabon:
     image: bde2020/strabon
     links:
-      - nginx
+      - csswrapper
+    environment:
+      - VIRTUAL_HOST=strabon.big-data-europe.local
+      - CSS_SOURCE=strabon
 
   sextant:
     image: bde2020/sextant
     links:
-      - nginx
+      - csswrapper
+    environment:
+      - VIRTUAL_HOST=sextant.big-data-europe.local
+      - CSS_SOURCE=sextant
 
   integrator-ui:
     build: ./integrator-ui
     links:
-      - nginx
+      - csswrapper
+
+networks:
+  nginx-proxy:
+    external:
+      name: nginx-proxy
