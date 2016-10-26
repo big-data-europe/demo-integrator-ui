@@ -1,0 +1,21 @@
+{ "data": [
+  {
+    "id": 1,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Spark Master",
+      "base-url": "http://spark-master.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 2,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Spark Worker",
+      "base-url": "http://spark-worker.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  }
+]
+}

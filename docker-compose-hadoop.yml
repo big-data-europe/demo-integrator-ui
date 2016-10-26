@@ -1,0 +1,105 @@
+version: '2'
+
+services:
+  csswrapper:
+    image: bde2020/nginx-proxy-with-css:latest
+    ports:
+      - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+
+  namenode:
+    image: bde2020/hadoop-namenode:1.0.0
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+    links:
+      - csswrapper
+    expose:
+      - "50070"
+    environment:
+      CLUSTER_NAME: "test"
+      VIRTUAL_HOST: "namenode.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "50070"
+      CSS_SOURCE: "hadoop"
+    env_file:
+      - ./hadoop.env
+
+  datanode:
+    image: bde2020/hadoop-datanode:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    volumes:
+      - ./data/datanode:/hadoop/dfs/data
+    expose:
+      - "50075"
+    environment:
+      VIRTUAL_HOST: "datanode.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "50075"
+      CSS_SOURCE: "hadoop"
+    env_file:
+      - ./hadoop.env
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8088"
+    environment:
+      VIRTUAL_HOST: "hadoop-resource-manager.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8088"
+      CSS_SOURCE: "hadoop-resource-manager"
+    env_file:
+      - ./hadoop.env
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    volumes:
+      - ./data/historyserver:/hadoop/yarn/timeline
+    expose:
+      - "8188"
+    environment:
+      VIRTUAL_HOST: "hadoop-history-server.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8188"
+      CSS_SOURCE: "hadoop-history-server"
+    env_file:
+      - ./hadoop.env
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8042"
+    environment:
+      VIRTUAL_HOST: "hadoop-node-manager.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8042"
+      CSS_SOURCE: "hadoop-node-manager"
+    env_file:
+      - ./hadoop.env
+
+  hue:
+    image: bde2020/hdfs-filebrowser:3.9
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8088"
+    environment:
+      VIRTUAL_HOST: "hue.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8088"
+      CSS_SOURCE: "hdfs"
+      NAMENODE_HOST: "namenode"
+
+  integrator-ui:
+    build: ./integrator-ui-hadoop
+    links:
+      - csswrapper
+    environment:
+      VIRTUAL_HOST: "integrator-ui.big-data-europe.aksw.org"

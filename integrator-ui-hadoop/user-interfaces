@@ -1,0 +1,57 @@
+{ "data": [
+  {
+    "id": 1,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Namenode",
+      "base-url": "http://namenode.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 2,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Datanode",
+      "base-url": "http://datanode.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 3,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Hadoop Resource Manager",
+      "base-url": "http://hadoop-resource-manager.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 4,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Hadoop History Server",
+      "base-url": "http://hadoop-history-server.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 5,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Hadoop Node Manager",
+      "base-url": "http://hadoop-node-manager.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 6,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "HDFS FileBrowser",
+      "base-url": "http://hue.big-data-europe.aksw.org/",
+      "append-path": "home"
+    }
+  }
+]
+}

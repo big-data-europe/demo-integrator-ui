@@ -41,17 +41,18 @@ First inject hostnames to your /etc/hosts for local deployment:
 ./edit-hosts.sh
 ```
 
-Then start csswrapper and component you want to run (in this case namenode):
+To start Hadoop deployment with HDFS FileBrowser run:
 ```
-docker-compose up csswrapper
-docker-compose up namenode
-docker-compose up integrator-ui
+make hadoop
 ```
 
-Navigate to ```namenode.big-data-europe.aksw.org``` or ```namenode.big-data-europe.aksw.org``` to see the interface.
+Navigate to ```namenode.big-data-europe.aksw.org``` or ```integrator-ui.big-data-europe.aksw.org``` to see the interface.
 
 ## Deploying integrator demo
-You will need to rewrite your DNS to point to the particular server. In our case everything is deployed on a single machine for demo purposes and DNS entry ```*.big-data-europe.aksw.org``` is pointing to that machine. To deploy all the components simply run:
+You will need to rewrite your DNS to point to the particular server. In our case everything is deployed on a single machine for demo purposes and DNS entry ```*.big-data-europe.aksw.org``` is pointing to that machine. To deploy the required components simply run e.g.:
 ```
-docker-compose up -d
+make hadoop
 ```
+
+## TODOs
+* Resource manager is not reachable

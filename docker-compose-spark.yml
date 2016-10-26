@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  csswrapper:
+    image: bde2020/nginx-proxy-with-css:latest
+    ports:
+      - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+
+  spark-master:
+    image: bde2020/spark-master:2.0.0-hadoop2.7-hive
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "spark-master.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "spark-master"
+      INIT_DAEMON_STEP: "setup_spark"
+
+  spark-worker:
+    image: bde2020/spark-worker:2.0.0-hadoop2.7-hive
+    links:
+      - csswrapper
+      - spark-master:spark-master
+    expose:
+      - "8081"
+    environment:
+      VIRTUAL_HOST: "spark-worker.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8081"
+      CSS_SOURCE: "spark-master"
+      SPARK_MASTER: "spark://spark-master:7077"
+
+  integrator-ui:
+    build: ./integrator-ui-spark
+    links:
+      - csswrapper
+    environment:
+      VIRTUAL_HOST: "integrator-ui.big-data-europe.aksw.org"
