@@ -186,3 +186,5 @@ services:
     build: ./integrator-ui
     links:
       - csswrapper
+    environment:
+      VIRTUAL_HOST: "integrator-ui.big-data-europe.aksw.org"

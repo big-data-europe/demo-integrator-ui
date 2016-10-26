@@ -30,15 +30,28 @@ Styling done: 5
 
 ## About this demo
 
-This demo runs docker containers for above mentioned components.
+This demo showcase interfaces for the above mentioned components.
 
 ## How to run
 
 ## Deploying one component
 
+First inject hostnames to your /etc/hosts for local deployment:
 ```
-docker-compose up csswrapper
-docker-compose up namenode datanode1
+./edit-hosts.sh
 ```
 
+Then start csswrapper and component you want to run (in this case namenode):
+```
+docker-compose up csswrapper
+docker-compose up namenode
+docker-compose up integrator-ui
+```
+
+Navigate to ```namenode.big-data-europe.aksw.org``` or ```namenode.big-data-europe.aksw.org``` to see the interface.
+
 ## Deploying integrator demo
+You will need to rewrite your DNS to point to the particular server. In our case everything is deployed on a single machine for demo purposes and DNS entry ```*.big-data-europe.aksw.org``` is pointing to that machine. To deploy all the components simply run:
+```
+docker-compose up -d
+```
