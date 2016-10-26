@@ -14,10 +14,175 @@ services:
       - ./data/namenode:/hadoop/dfs/name
     links:
       - csswrapper
+    expose:
+      - "50070"
     environment:
       CLUSTER_NAME: "test"
-      VIRTUAL_HOST: "namenode.big-data-europe.local"
+      VIRTUAL_HOST: "namenode.big-data-europe.aksw.org"
       VIRTUAL_PORT: "50070"
       CSS_SOURCE: "hadoop"
     env_file:
       - ./hadoop.env
+
+  datanode:
+    image: bde2020/hadoop-datanode:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    volumes:
+      - ./data/datanode:/hadoop/dfs/data
+    expose:
+      - "50075"
+    environment:
+      VIRTUAL_HOST: "datanode.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "50075"
+      CSS_SOURCE: "hadoop"
+    env_file:
+      - ./hadoop.env
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8088"
+    environment:
+      VIRTUAL_HOST: "hadoop-resource-manager.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8088"
+      CSS_SOURCE: "hadoop-resource-manager"
+    env_file:
+      - ./hadoop.env
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    volumes:
+      - ./data/historyserver:/hadoop/yarn/timeline
+    expose:
+      - "8188"
+    environment:
+      VIRTUAL_HOST: "hadoop-history-server.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8188"
+      CSS_SOURCE: "hadoop-history-server"
+    env_file:
+      - ./hadoop.env
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:1.0.0
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8042"
+    environment:
+      VIRTUAL_HOST: "hadoop-node-manager.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8042"
+      CSS_SOURCE: "hadoop-node-manager"
+    env_file:
+      - ./hadoop.env
+
+  hue:
+    image: bde2020/hdfs-filebrowser:3.9
+    links:
+      - csswrapper
+      - namenode
+    expose:
+      - "8088"
+    environment:
+      VIRTUAL_HOST: "hue.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8088"
+      CSS_SOURCE: "hdfs"
+      NAMENODE_HOST: "namenode"
+
+  spark-master:
+    image: bde2020/spark-master:1.5.1-hadoop2.6
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "spark-master.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "spark-master"
+      INIT_DAEMON_STEP: "setup_spark"
+
+  spark-worker:
+    image: bde2020/spark-worker:1.5.1-hadoop2.6
+    links:
+      - csswrapper
+      - spark-master
+    expose:
+      - "8081"
+    environment:
+      VIRTUAL_HOST: "spark-worker.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8081"
+      CSS_SOURCE: "spark-master"
+      SPARK_MASTER: "spark://spark-master:7077"
+
+  flink-master:
+    image: bde2020/flink-master:0.10.1-hadoop2.7
+    links:
+      - csswrapper
+    expose:
+      - "8081"
+    environment:
+      VIRTUAL_HOST: "flink-master.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8081"
+      CSS_SOURCE: "flink"
+      INIT_DAEMON_STEP: "setup_flink"
+
+  flink-worker:
+    image: bde2020/flink-worker:0.10.1-hadoop2.7
+    links:
+      - csswrapper
+      - flink-master
+
+  solr:
+    image: earthquakesan/solr:1.0.0-solr6.0.1
+    links:
+      - csswrapper
+      - zookeeper
+    expose:
+      - "8983"
+    environment:
+      VIRTUAL_HOST: "solr.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8983"
+      CSS_SOURCE: "solr"
+      ZOOKEEPER_HOST: "zookeeper:2181"
+
+  zookeeper:
+    image: mesoscloud/zookeeper:3.4.8-centos-7
+    links:
+      - csswrapper
+    environment:
+      - MYID=1
+
+  strabon:
+    image: bde2020/strabon
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "strabon.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "strabon"
+
+  sextant:
+    image: bde2020/sextant
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "sextant.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "sextant"
+
+  integrator-ui:
+    build: ./integrator-ui
+    links:
+      - csswrapper

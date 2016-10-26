@@ -3,8 +3,8 @@
     "id": 1,
     "type": "user-interfaces",
     "attributes": {
-      "label": "Hadoop",
-      "base-url": "http://hadoop.sc1.big-data-europe.eu/",
+      "label": "Namenode",
+      "base-url": "http://namenode.big-data-europe.aksw.org/",
       "append-path": ""
     }
   },
@@ -12,17 +12,17 @@
     "id": 2,
     "type": "user-interfaces",
     "attributes": {
-      "label": "HDFS FileBrowser",
-      "base-url": "http://hdfsfb.sc1.big-data-europe.eu/",
-      "append-path": "home"
+      "label": "Datanode",
+      "base-url": "http://datanode.big-data-europe.aksw.org/",
+      "append-path": ""
     }
   },
   {
     "id": 3,
     "type": "user-interfaces",
     "attributes": {
-      "label": "Spark",
-      "base-url": "http://spark.sc1.big-data-europe.eu/",
+      "label": "Hadoop Resource Manager",
+      "base-url": "http://hadoop-resource-manager.big-data-europe.aksw.org/",
       "append-path": ""
     }
   },
@@ -30,8 +30,8 @@
     "id": 4,
     "type": "user-interfaces",
     "attributes": {
-      "label": "Flink",
-      "base-url": "http://flink.sc1.big-data-europe.eu/",
+      "label": "Hadoop History Server",
+      "base-url": "http://hadoop-history-server.big-data-europe.aksw.org/",
       "append-path": ""
     }
   },
@@ -39,8 +39,8 @@
     "id": 5,
     "type": "user-interfaces",
     "attributes": {
-      "label": "Solr",
-      "base-url": "http://solr.sc1.big-data-europe.eu/",
+      "label": "Hadoop Node Manager",
+      "base-url": "http://hadoop-node-manager.big-data-europe.aksw.org/",
       "append-path": ""
     }
   },
@@ -48,17 +48,62 @@
     "id": 6,
     "type": "user-interfaces",
     "attributes": {
-      "label": "Strabon",
-      "base-url": "http://strabon.sc1.big-data-europe.eu/",
-      "append-path": "strabon/"
+      "label": "HDFS FileBrowser",
+      "base-url": "http://hue.big-data-europe.aksw.org/",
+      "append-path": "home"
     }
   },
   {
     "id": 7,
     "type": "user-interfaces",
     "attributes": {
+      "label": "Spark Master",
+      "base-url": "http://spark-master.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 8,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Spark Worker",
+      "base-url": "http://spark-worker.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 9,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Flink Master",
+      "base-url": "http://flink-master.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 10,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Solr",
+      "base-url": "http://solr.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 11,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Strabon",
+      "base-url": "http://strabon.big-data-europe.aksw.org/",
+      "append-path": "strabon/"
+    }
+  },
+  {
+    "id": 12,
+    "type": "user-interfaces",
+    "attributes": {
       "label": "Sextant",
-      "base-url": "http://sextant.sc1.big-data-europe.eu/",
+      "base-url": "http://sextant.big-data-europe.aksw.org/",
       "append-path": "Sextant_v2.0/"
     }
   }
