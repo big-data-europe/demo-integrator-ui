@@ -1,0 +1,12 @@
+{ "data": [
+  {
+    "id": 1,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Flink Master",
+      "base-url": "http://flink-master.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  }
+]
+}

@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  csswrapper:
+    image: bde2020/nginx-proxy-with-css:latest
+    ports:
+      - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+
+  flink-master:
+    image: bde2020/flink-master:0.10.1-hadoop2.7
+    links:
+      - csswrapper
+    expose:
+      - "8081"
+    environment:
+      VIRTUAL_HOST: "flink-master.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8081"
+      CSS_SOURCE: "flink"
+      INIT_DAEMON_STEP: "setup_flink"
+
+  flink-worker:
+    image: bde2020/flink-worker:0.10.1-hadoop2.7
+    links:
+      - csswrapper
+      - flink-master
+
+  integrator-ui:
+    build: ./integrator-ui-flink
+    links:
+      - csswrapper
+    environment:
+      VIRTUAL_HOST: "integrator-ui.big-data-europe.aksw.org"

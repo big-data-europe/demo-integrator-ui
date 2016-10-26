@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+  csswrapper:
+    image: bde2020/nginx-proxy-with-css:latest
+    ports:
+      - "80:80"
+    volumes:
+      -  /var/run/docker.sock:/tmp/docker.sock:ro
+
+  solr:
+    image: earthquakesan/solr:1.0.0-solr6.0.1
+    links:
+      - csswrapper
+      - zookeeper
+    expose:
+      - "8983"
+    environment:
+      VIRTUAL_HOST: "solr.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8983"
+      CSS_SOURCE: "solr"
+      ZOOKEEPER_HOST: "zookeeper:2181"
+
+  zookeeper:
+    image: mesoscloud/zookeeper:3.4.8-centos-7
+    links:
+      - csswrapper
+    environment:
+      - MYID=1
+
+  strabon:
+    image: bde2020/strabon
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "strabon.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "strabon"
+
+  sextant:
+    image: bde2020/sextant
+    links:
+      - csswrapper
+    expose:
+      - "8080"
+    environment:
+      VIRTUAL_HOST: "sextant.big-data-europe.aksw.org"
+      VIRTUAL_PORT: "8080"
+      CSS_SOURCE: "sextant"
+
+  integrator-ui:
+    build: ./integrator-ui-solr-strabon-sextant
+    links:
+      - csswrapper
+    environment:
+      VIRTUAL_HOST: "integrator-ui.big-data-europe.aksw.org"

@@ -54,5 +54,14 @@ You will need to rewrite your DNS to point to the particular server. In our case
 make hadoop
 ```
 
+## Available commands
+```
+make hadoop
+make spark
+make flink
+make solr-strabon-sextant
+```
+
 ## TODOs
 * Resource manager is not reachable
+* CSS for Hue is breaking upload functionality

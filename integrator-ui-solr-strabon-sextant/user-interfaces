@@ -1,0 +1,30 @@
+{ "data": [
+  {
+    "id": 1,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Solr",
+      "base-url": "http://solr.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  },
+  {
+    "id": 2,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Strabon",
+      "base-url": "http://strabon.big-data-europe.aksw.org/",
+      "append-path": "strabon/"
+    }
+  },
+  {
+    "id": 3,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "Sextant",
+      "base-url": "http://sextant.big-data-europe.aksw.org/",
+      "append-path": "Sextant_v2.0/"
+    }
+  }
+]
+}
