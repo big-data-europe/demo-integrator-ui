@@ -9,8 +9,8 @@
 
 Component | Used_in | Done?
 --- | --- | ---
-Apache Flume | SC2, SC6 | **NO**
-Apache Kafka | SC2, SC4, SC6 | **NO**
+Apache Flume | SC2, SC6 | NONE
+Apache Kafka | SC2, SC4, SC6 | NONE
 Apache Spark | SC2, SC4, SC6, SC7 | YES
 Apache Flink | SC4 | **PARTIALLY**
 HDFS | SC2, SC4, SC6, SC7 | YES
