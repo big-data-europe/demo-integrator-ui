@@ -15,7 +15,7 @@ Apache Spark | SC2, SC4, SC6, SC7 | YES
 Apache Flink | SC4 | **PARTIALLY**
 HDFS | SC2, SC4, SC6, SC7 | YES
 Hue FileBrowser | Demos | YES
-Apache Cassandra | SC4, SC7 | **NO**
+Apache Cassandra | SC4, SC7 | NONE
 OpenLink Virtuoso | SC1, SC2, SC6 | **NO**
 4store | SC1, SC2, SC6 | **NO**
 Strabon | SC7 | YES
