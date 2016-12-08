@@ -2,7 +2,7 @@
 
 <p align="left">
   <h3>Styling progress
-    <img src="http://progressed.io/bar/33" height="40"></h3>
+    <img src="http://progressed.io/bar/53" height="40"></h3>
 </p>
 
 ## List of components
