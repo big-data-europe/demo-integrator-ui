@@ -2,7 +2,7 @@
 
 <p align="left">
   <h3>Styling progress
-    <img src="http://progressed.io/bar/53" height="40"></h3>
+    <img src="http://progressed.io/bar/67" height="40"></h3>
 </p>
 
 ## List of components
@@ -20,7 +20,7 @@ OpenLink Virtuoso | SC1, SC2, SC6 | **NO**
 4store | SC1, SC2, SC6 | **NO**
 Strabon | SC7 | YES
 Sextant | SC7 | YES
-GeoTriples | SC7 | **NO**
+GeoTriples | SC7 | **NONE**
 SEMAGROW Engine | SC7 | **NO**
 UnifiedViews | SC2, SC6 | **NO**
 PoolParty | SC2, SC6 | **NO**
