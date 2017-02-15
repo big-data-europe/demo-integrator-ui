@@ -14,3 +14,4 @@ echo "127.0.0.1 solr.big-data-europe.aksw.org" >> /etc/hosts
 echo "127.0.0.1 strabon.big-data-europe.aksw.org" >> /etc/hosts
 echo "127.0.0.1 sextant.big-data-europe.aksw.org" >> /etc/hosts
 echo "127.0.0.1 integrator-ui.big-data-europe.aksw.org" >> /etc/hosts
+echo "127.0.0.1 semagrow.big-data-europe.aksw.org" >> /etc/hosts

@@ -1,0 +1,12 @@
+{ "data": [
+  {
+    "id": 1,
+    "type": "user-interfaces",
+    "attributes": {
+      "label": "SemaGrow",
+      "base-url": "http://semagrow.big-data-europe.aksw.org/",
+      "append-path": ""
+    }
+  }
+]
+}
