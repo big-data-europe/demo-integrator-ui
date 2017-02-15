@@ -17,7 +17,7 @@ services:
     environment:
       VIRTUAL_HOST: "flink-master.big-data-europe.aksw.org"
       VIRTUAL_PORT: "8081"
-      CSS_SOURCE: "flink"
+      CSS_SOURCE: "flink-dashboard"
       INIT_DAEMON_STEP: "setup_flink"
 
   flink-worker:
