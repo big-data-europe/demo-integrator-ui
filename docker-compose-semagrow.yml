@@ -9,7 +9,7 @@ services:
       -  /var/run/docker.sock:/tmp/docker.sock:ro
 
   semagrow:
-    image: semagrow/semagrow
+    image: semagrow/semagrow:2.0.0
     links:
       - csswrapper
     expose:
