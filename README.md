@@ -66,7 +66,3 @@ make solr-strabon-sextant
 
 ## Special note for SemaGrow
 After deploying SemaGrow will be accessible on http://semagrow.big-data-europe.aksw.org/SemaGrow/
-
-## TODOs
-* Resource manager is not reachable
-* CSS for Hue is breaking upload functionality
